@@ -5,8 +5,6 @@ import ShelfList from "./ShelfList";
 
 
 const AllBookList = ({bookCollection, onShelfChange}) => {
-    console.log("allBookList")
-    console.log(bookCollection)
     const currentShelf = bookCollection.filter((item) =>
         item.shelf === "currentlyReading"
     );
