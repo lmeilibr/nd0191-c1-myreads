@@ -7,31 +7,6 @@ import {getAll, search, update} from "./BooksAPI";
 
 
 function App() {
-    // const init = [{
-    //     id: "ycTADgAAQBAJ",
-    //     shelf: "currentlyReading",
-    //     bookname: "Learnind React",
-    //     author: "Alex Bank",
-    //     style: {
-    //         width: 128,
-    //         height: 193,
-    //         backgroundImage:
-    //             'url("http://books.google.com/books/content?id=ycTADgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"")',
-    //     }
-    // },
-    //     {
-    //         id: "Rhl1CgAAQBAJ",
-    //         shelf: "currentlyReading",
-    //         bookname: "React.js Essentials",
-    //         author: "Artemij Fedosejev",
-    //         style: {
-    //             width: 128,
-    //             height: 188,
-    //             backgroundImage:
-    //                 'url("http://books.google.com/books/content?id=Rhl1CgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api")',
-    //         }
-    //     },
-    //     ]
 
     const [searchBooks, setSearchBooks] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -59,19 +34,6 @@ function App() {
 
     useEffect(() => {
         const initializeBooks = async () => {
-            const currBooks = [{id: "ycTADgAAQBAJ"},
-                {id: "Rhl1CgAAQBAJ"}]
-            currBooks.forEach((book) => {
-                update(book, 'currentlyReading')
-            })
-            const wantToRead = [{id: "HfbBDAAAQBAJ"},{id:"Q7ABAAAAQAAJ"}]
-            wantToRead.forEach((book)=>{
-                update(book, 'wantToRead')
-            })
-            const read = [{id:"io1TYkFAur8C"},{id:"lcPm0nRIITwC"}]
-            read.forEach((book)=>{
-                update(book, "read")
-            })
 
             const res = await getAll();
             const init = bookParser(res)
@@ -171,6 +133,7 @@ function App() {
                    element={<Search searchBooksCollection={searchBooks}
                                     onShelfChange={handleBookShelfChange}
                                     onChangeTerm={handleSearchterm}
+                                    searchTerm={searchTerm}
                    />}
             />
         </Routes>

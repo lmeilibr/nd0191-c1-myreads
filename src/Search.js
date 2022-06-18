@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import ShelfList from "./ShelfList";
 
-const Search = ({searchBooksCollection, onShelfChange, onChangeTerm}) => {
+const Search = ({searchBooksCollection, onShelfChange, onChangeTerm, searchTerm}) => {
 
     return (
         <div className="search-books">
@@ -22,7 +22,7 @@ const Search = ({searchBooksCollection, onShelfChange, onChangeTerm}) => {
             <div className="search-books-results">
                 <ol className="books-grid"></ol>
             </div>
-            <ShelfList shelfName={"Search"} books={searchBooksCollection} onShelfChange={onShelfChange}/>
+            {searchTerm && <ShelfList shelfName={"Search"} books={searchBooksCollection} onShelfChange={onShelfChange}/>}
         </div>
     )
 }
