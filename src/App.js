@@ -7,6 +7,31 @@ import {getAll, search, update} from "./BooksAPI";
 
 
 function App() {
+    // const init = [{
+    //     id: "ycTADgAAQBAJ",
+    //     shelf: "currentlyReading",
+    //     bookname: "Learnind React",
+    //     author: "Alex Bank",
+    //     style: {
+    //         width: 128,
+    //         height: 193,
+    //         backgroundImage:
+    //             'url("http://books.google.com/books/content?id=ycTADgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"")',
+    //     }
+    // },
+    //     {
+    //         id: "Rhl1CgAAQBAJ",
+    //         shelf: "currentlyReading",
+    //         bookname: "React.js Essentials",
+    //         author: "Artemij Fedosejev",
+    //         style: {
+    //             width: 128,
+    //             height: 188,
+    //             backgroundImage:
+    //                 'url("http://books.google.com/books/content?id=Rhl1CgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api")',
+    //         }
+    //     },
+    //     ]
 
     const [searchBooks, setSearchBooks] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -34,8 +59,16 @@ function App() {
 
     useEffect(() => {
         const initializeBooks = async () => {
+            const books = [{id: "ycTADgAAQBAJ"},
+                {id: "Rhl1CgAAQBAJ"}]
+            books.forEach((book) => {
+                update(book, 'currentlyReading')
+            })
+
             const res = await getAll();
-            setInitialBooks(res)
+            const init = bookParser(res)
+            setInitialBooks(init)
+            setBookShelf(init)
         }
         initializeBooks()
     }, [])
@@ -74,6 +107,7 @@ function App() {
                 }
 
                 const result = updateSearchListShelf(searchList)
+                console.log(result)
 
 
                 const parseBooks = bookParser(result);
