@@ -59,10 +59,18 @@ function App() {
 
     useEffect(() => {
         const initializeBooks = async () => {
-            const books = [{id: "ycTADgAAQBAJ"},
+            const currBooks = [{id: "ycTADgAAQBAJ"},
                 {id: "Rhl1CgAAQBAJ"}]
-            books.forEach((book) => {
+            currBooks.forEach((book) => {
                 update(book, 'currentlyReading')
+            })
+            const wantToRead = [{id: "HfbBDAAAQBAJ"},{id:"Q7ABAAAAQAAJ"}]
+            wantToRead.forEach((book)=>{
+                update(book, 'wantToRead')
+            })
+            const read = [{id:"io1TYkFAur8C"},{id:"lcPm0nRIITwC"}]
+            read.forEach((book)=>{
+                update(book, "read")
             })
 
             const res = await getAll();
