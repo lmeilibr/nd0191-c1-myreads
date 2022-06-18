@@ -7,7 +7,7 @@ const ShelfList = ({shelfName, books, onShelfChange}) => {
             <h2 className="bookshelf-title">{shelfName}</h2>
             <div className="bookshelf-books">
                 <ol className="books-grid">
-                    {books.map((item) => {
+                    {books.length === 0 ? <p>No Results</p> : books.map((item) => {
                         return (
                             <li key={item.id}>
                                 <Book metadata={item} onShelfChange={onShelfChange}/>

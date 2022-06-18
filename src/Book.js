@@ -1,5 +1,6 @@
 const ShelfSelector = ({metadata, handle}) => {
 
+
     return (
         <div className="book-shelf-changer">
             <select value={metadata.shelf} onChange={(event) => handle(event, metadata)}>

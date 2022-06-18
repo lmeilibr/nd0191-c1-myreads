@@ -8,13 +8,17 @@ import {getAll, search, update} from "./BooksAPI";
 
 function App() {
 
-    const [searchBooks, setSearchBooks] = useState([])
-    const [searchTerm, setSearchTerm] = useState("")
+    const [searchBooks, setSearchBooks] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [initialBooks, setInitialBooks] = useState([]);
+    const [bookShelf, setBookShelf] = useState(initialBooks);
 
-    function bookParser(searchList) {
-        const parseBooks = searchList.map((book) => {
+    function bookParser(apiBooks) {
+
+        return apiBooks.map((book) => {
+
             return {
-                shelf: book.shelf,
+                shelf: book.shelf || "none",
                 id: book.id,
                 bookname: book.title,
                 author: "authors" in book ? book.authors[0] : "",
@@ -24,15 +28,26 @@ function App() {
                     backgroundImage: "imageLinks" in book ? `url(${book.imageLinks.thumbnail}` : ''
                 }
             };
-        })
-        return parseBooks;
+        });
     }
+
+
+    useEffect(() => {
+        const initializeBooks = async () => {
+            const res = await getAll();
+            setInitialBooks(res)
+        }
+        initializeBooks()
+    }, [])
 
     useEffect(() => {
             const getSearchBooks = async () => {
+                if (!searchTerm) {
+                    return
+                }
                 const res = await search(searchTerm);
 
-                let searchList = res || []
+                let searchList
 
                 if (res === undefined || 'error' in res) {
                     searchList = []
@@ -40,19 +55,37 @@ function App() {
                     searchList = res
                 }
 
-                const parseBooks = bookParser(searchList);
+                function updateSearchListShelf(listOfItems) {
+                    let result = []
+
+                    for (let i = 0; i < listOfItems.length; i++) {
+                        let newItem = listOfItems[i]
+                        for (let j = 0; j < bookShelf.length; j++) {
+                            if (bookShelf[j].id === listOfItems[i].id) {
+                                newItem = {
+                                    ...listOfItems[i],
+                                    shelf: bookShelf[j].shelf
+                                }
+                            }
+                        }
+                        result.push(newItem)
+                    }
+                    return result
+                }
+
+                const result = updateSearchListShelf(searchList)
+
+
+                const parseBooks = bookParser(result);
                 setSearchBooks(parseBooks || []);
             }
             getSearchBooks()
         }
 
         ,
-        [searchTerm]
+        [searchTerm, bookShelf]
     )
 
-    const bookCollection = []
-
-    const [bookShelf, setBookShelf] = useState(bookCollection);
 
     function handleBookShelfChange(event, book) {
 
@@ -69,6 +102,7 @@ function App() {
                 allBookRes = res
             }
 
+
             const allParseBooks = bookParser(allBookRes);
             setBookShelf(allParseBooks || []);
         }
@@ -76,12 +110,10 @@ function App() {
         updateShelf();
 
 
-
     }
 
     function handleSearchterm(event) {
         const newSearchTerm = event.target.value
-        console.log(newSearchTerm)
         setSearchTerm(newSearchTerm)
     }
 
